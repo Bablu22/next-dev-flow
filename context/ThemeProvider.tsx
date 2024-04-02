@@ -16,16 +16,32 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: PropsWithChildren) => {
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState("");
 
-  useEffect(() => {
-    if (mode === "light") {
+  const handleChange = () => {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       setMode("dark");
       document.documentElement.classList.add("dark");
+    } else if (localStorage.theme === "system") {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        setMode("system");
+        document.documentElement.classList.add("dark");
+      } else {
+        setMode("light");
+        document.documentElement.classList.remove("dark");
+      }
     } else {
       setMode("light");
       document.documentElement.classList.remove("dark");
     }
+  };
+
+  useEffect(() => {
+    handleChange();
   }, [mode]);
 
   return (

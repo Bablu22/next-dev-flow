@@ -40,6 +40,9 @@ body {
   .markdown {
     @apply max-w-full prose dark:prose-p text-light-700 dark:prose;
   }
+  .no-focus {
+    @apply focus-visible:ring-0 focus-visible:ring-transparent focus:outline-none;
+  }
 
   .primary-gradient {
     background: linear-gradient(129deg, #ff7000 0%, #e2995f 100%);
@@ -55,9 +58,6 @@ body {
 
   .tab {
     @apply min-h-full dark:bg-dark-400 bg-light-800 text-light-5;
-  }
-  .no-focus {
-    @apply focus-visible:ring-0 focus-visible:ring-transparent focus;
   }
 }
 
