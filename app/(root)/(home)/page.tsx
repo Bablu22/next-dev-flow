@@ -5,6 +5,38 @@ import { HomePageFilters } from "../../../constants/filters";
 
 import Link from "next/link";
 import HomeFilters from "@/components/home/HomeFilters";
+import QuestionCard from "@/components/cards/QuestionCard";
+
+const questions = [
+  {
+    _id: 1,
+    title: "How to create a new project in React?",
+    tags: [
+      { _id: 1, name: "React" },
+      { _id: 2, name: "JavaScript" },
+    ],
+    author: "John Doe",
+    upvotes: 10,
+    downvotes: 2,
+    views: 20,
+    answers: 5,
+    createdAt: new Date("2021-09-01T10:00:00"),
+  },
+  {
+    _id: 2,
+    title: "How to create a new project in Angular?",
+    tags: [
+      { _id: 3, name: "Angular" },
+      { _id: 4, name: "TypeScript" },
+    ],
+    author: "Jane Doe",
+    upvotes: 20,
+    downvotes: 5,
+    views: 40,
+    answers: 10,
+    createdAt: new Date("2021-09-01T12:00:00"),
+  },
+];
 
 const Home = () => {
   return (
@@ -32,6 +64,34 @@ const Home = () => {
         />
       </div>
       <HomeFilters />
+      <div className="mt-10 flex w-full flex-col gap-6">
+        {questions.length > 0 ? (
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              title={question.title}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              downvotes={question.downvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+            />
+          ))
+        ) : (
+          // <NoResult
+          //   title="There's no question to show"
+          //   description="Be the first to break the silence! 🚀 Ask a Question and kickstart the
+          //   discussion. our query could be the next big thing others learn from. Get
+          //   involved! 💡"
+          //   link="/ask-question"
+          //   linkTitle="Ask a Question"
+          // />
+          <></>
+        )}
+      </div>
     </>
   );
 };
