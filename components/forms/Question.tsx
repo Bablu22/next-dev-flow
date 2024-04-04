@@ -21,15 +21,19 @@ import { KeyboardEvent, useRef, useState } from "react";
 import { useTheme } from "@/context/ThemeProvider";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
+import { createQuestion } from "@/lib/actions/question.action";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   type?: "Edit";
-  mongoUserId?: string;
+  mongoUserId: string;
   questionDetails?: string;
 }
 
 const Question = ({ type, mongoUserId, questionDetails }: Props) => {
   const { mode } = useTheme();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const editorRef = useRef(null);
   const [submitting, setSubmitting] = useState(false);
@@ -42,11 +46,22 @@ const Question = ({ type, mongoUserId, questionDetails }: Props) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof QuestionSchema>) {
+  async function onSubmit(values: z.infer<typeof QuestionSchema>) {
     setSubmitting(true);
+
     try {
+      await createQuestion({
+        title: values.title,
+        content: values.explanation,
+        tags: values.tags,
+        author: JSON.parse(mongoUserId),
+        path: pathname,
+      });
+      router.push("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      setSubmitting(false);
     }
   }
 
